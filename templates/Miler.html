@@ -1,0 +1,5 @@
+{% import "_query_table.html" as querytable with context %}
+
+<h2>Miles Expiry Tracker</h2>
+{% set results = extension.build_miles_tables() %}
+{{ querytable.querytable(None, results[0], results[1]) }}
