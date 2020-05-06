@@ -20,6 +20,7 @@ pip install fava-miler
 - Define your `operating_currency`
 - Declare the currency for each of your airline miles
 - Add `expiry-months` and `points-value` metadata to your commodity declaration
+  - Any negative value for `expiry-months` signifies that this commodity never expires
 
 This should get the reporter working. Example:
 

@@ -51,7 +51,10 @@ def get_miles_expirations(accapi, options):
         converted_value = Amount(value.number * row.balance, value.currency)
 
         expiry_months = meta.get('expiry-months', 0)
-        expiry = row.latest_transaction + datetime.timedelta(int(expiry_months)*365/12)
+        if expiry_months >=0:
+            expiry = row.latest_transaction + datetime.timedelta(int(expiry_months)*365/12)
+        else:
+            expiry = datetime.date.max
 
         ret_rows.append(RetRow(*row[:-1], converted_value, expiry))
 
