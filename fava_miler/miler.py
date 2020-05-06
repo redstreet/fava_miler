@@ -3,8 +3,8 @@
 
 import argparse,argcomplete,argh
 import libmiler
-import fava_investor.common.beancountinvestorapi as api
-from fava_investor.common.clicommon import *
+import fava_miler.common.beancountinvestorapi as api
+from fava_miler.common.clicommon import *
 
 def miler(beancount_file,
         accounts_pattern='^Assets.*Reward',
