@@ -9,6 +9,8 @@ mile transactions in Beancount, this simple plugin reports on the value of miles
 their expiry date. This is particularly useful if you have miles/points on many airlines
 or businesses.
 
+![Screenshot: Miler](http://imgbox.com/DW4QMWIx)
+
 ## Installation
 ```bash
 pip install fava-miler
