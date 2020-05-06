@@ -34,3 +34,20 @@ option "operating_currency" "USD"
         Assets:Miles:AirAldorra 100 MILESAIRALD
         Income:Misc
 ```
+
+## Running
+
+### beancount
+```
+./miler.py --help
+```
+
+### fava
+Add the following to your source and run fava as you normally would.
+
+```
+2010-01-01 custom "fava-extension" "fava_miler" "{
+  'accounts_pattern' : '^Assets.*Reward',
+  'exclude_currencies' : '(POINTS_ABC)|(POINTS_DEF)',
+}"
+```
