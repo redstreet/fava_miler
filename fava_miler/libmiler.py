@@ -36,7 +36,7 @@ def get_miles_expirations(accapi, options):
     retrow_types = rtypes[:-1] +  [('value', int), ('expiry', datetime.date)]
     RetRow = collections.namedtuple('RetRow', [i[0] for i in retrow_types])
 
-    commodities = accapi.get_commodity_map()
+    commodities = accapi.get_commodity_directives()
     def get_miles_metadata(miles):
         try:
             return commodities[miles].meta
