@@ -5,6 +5,12 @@ from beancount.core.amount import Amount
 import collections
 import datetime
 
+# We want:
+# - to set list and expiration policy by {commodity, account} metadata
+# - optionally exclude currencies and accounts
+# - display both under different tables
+
+
 def get_miles_expirations(accapi, options):
     """Show expiry of airline miles, rewards points"""
 
