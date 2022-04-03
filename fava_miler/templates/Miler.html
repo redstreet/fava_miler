@@ -2,4 +2,4 @@
 
 <h2>Miles Expiry Tracker</h2>
 {% set results = extension.build_miles_tables() %}
-{{ querytable.querytable(None, results[0], results[1]) }}
+{{ querytable.querytable(ledger, None, *results) }}

@@ -20,7 +20,7 @@ setup(
     include_package_data=True,
     install_requires=[
         'beancount>=2.3.1',
-        'fava>=1.13',
+        'fava>=1.19',
         'argh>=0.23.3',
         'argcomplete>=1.11.1'
     ],
