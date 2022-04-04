@@ -60,9 +60,9 @@ def get_miles_expirations(accapi, options):
         if expiry_months >=0:
             expiry = row.latest_transaction + datetime.timedelta(int(expiry_months)*365/12)
         else:
-            expiry = datetime.date.max
+            expiry = "No expiry"
 
         ret_rows.append(RetRow(*row[:-1], converted_value, expiry))
 
-    ret_rows.sort(key=lambda r: r[-1])
+    ret_rows.sort(key=lambda r: r[-1] if not isinstance(r[-1], str) else datetime.date.max)
     return retrow_types, ret_rows
