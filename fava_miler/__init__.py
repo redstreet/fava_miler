@@ -4,6 +4,7 @@ from fava.ext import FavaExtensionBase
 from . import libmiler
 from .common.favainvestorapi import *
 
+
 class Miler(FavaExtensionBase):  # pragma: no cover
     """Airline miles and rewards points expiry tracker"""
     report_title = "Miler"

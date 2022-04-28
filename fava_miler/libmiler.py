@@ -1,6 +1,6 @@
 #!/bin/env python3
 
-from beancount.core.number import ZERO, Decimal, D
+from beancount.core.number import Decimal
 from beancount.core.amount import Amount
 import collections
 import datetime
@@ -30,19 +30,20 @@ def get_miles_expirations(accapi, options):
          AND account ~ '{accounts_pattern}'
          {exclude}
        GROUP BY account,Points ORDER BY LAST(date)
-    """.format(currencies = accapi.get_operating_currencies_regex(),
-            accounts_pattern = options.get('accounts_pattern', 'Assets'),
-            exclude=exclude,
-    )
+    """.format(currencies=accapi.get_operating_currencies_regex(),
+               accounts_pattern=options.get('accounts_pattern', 'Assets'),
+               exclude=exclude,
+               )
     rtypes, rrows = accapi.query_func(sql)
     if not rtypes:
         return [], {}, [[]]
 
     # our output table is slightly different from our query table:
-    retrow_types = rtypes[:-1] +  [('value', int), ('expiry', datetime.date)]
+    retrow_types = rtypes[:-1] + [('value', int), ('expiry', datetime.date)]
     RetRow = collections.namedtuple('RetRow', [i[0] for i in retrow_types])
 
     commodities = accapi.get_commodity_directives()
+
     def get_miles_metadata(miles):
         try:
             return commodities[miles].meta
@@ -57,7 +58,7 @@ def get_miles_expirations(accapi, options):
         converted_value = Amount(value.number * row.balance, value.currency)
 
         expiry_months = meta.get('expiry-months', 0)
-        if expiry_months >=0:
+        if expiry_months >= 0:
             expiry = row.latest_transaction + datetime.timedelta(int(expiry_months)*365/12)
         else:
             expiry = "No expiry"

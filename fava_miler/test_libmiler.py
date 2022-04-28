@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 
-import common.beancountinvestorapi as api
-import functools
+import fava_miler.common.beancountinvestorapi as api
 from beancount.utils import test_utils
-import libmiler
+from fava_miler import libmiler
 from datetime import datetime
 from decimal import Decimal
 from beancount.core.amount import Amount
 # python3 -m unittest discover . to run
-
 
 
 class TestScriptCheck(test_utils.TestCase):
@@ -25,7 +23,7 @@ class TestScriptCheck(test_utils.TestCase):
 
         2000-01-01 open Assets:Miles:AirAldorra MILESAIRALD
         2000-01-01 open Income:Misc
-        
+
         2010-01-01 * "Credit card miles"
                 Assets:Miles:AirAldorra 100 MILESAIRALD
                 Income:Misc
@@ -44,7 +42,7 @@ class TestScriptCheck(test_utils.TestCase):
         option "operating_currency" "USD"
         2000-01-01 open Assets:Miles:AirAldorra MILESAIRALD
         2000-01-01 open Income:Misc
-        
+
         2010-01-01 * "Credit card miles"
                 Assets:Miles:AirAldorra 100 MILESAIRALD
                 Income:Misc
@@ -56,4 +54,3 @@ class TestScriptCheck(test_utils.TestCase):
         self.assertEqual(rrows[0].balance, Decimal('100'))
         self.assertEqual(rrows[0].value, Amount(Decimal(0), 'NONE'))
         self.assertEqual(rrows[0].expiry, datetime.date(datetime(2010, 1, 1)))
-
