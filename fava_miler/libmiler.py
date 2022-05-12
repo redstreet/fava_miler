@@ -47,7 +47,7 @@ def get_miles_expirations(accapi, options):
     def get_miles_metadata(miles):
         try:
             return commodities[miles].meta
-        except:
+        except (KeyError, AttributeError):
             return {}
 
     ret_rows = []
