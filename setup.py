@@ -21,9 +21,13 @@ setup(
     install_requires=[
         'beancount>=2.3.1',
         'fava>=1.19',
-        'argh>=0.23.3',
-        'argcomplete>=1.11.1'
+        'Click',
     ],
+    entry_points={
+        'console_scripts': [
+            'fava-miler = fava_miler.miler:miler',
+        ]
+    },
     zip_safe=False,
     classifiers=[
         'Development Status :: 3 - Alpha',

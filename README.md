@@ -42,7 +42,7 @@ option "operating_currency" "USD"
 
 ### beancount
 ```
-./miler.py --help
+fava-miler --help
 ```
 
 ### fava
