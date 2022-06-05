@@ -2,7 +2,7 @@
 
 # fava_miler/build/lib/fava_miler/miler.py: 4
 # fava_miler/fava_miler/miler.py: 4
-Click == 7.0
+Click >= 7.0
 
 # fava_miler/build/lib/fava_miler/common/beancountinvestorapi.py: 3,4,5,6,7,8
 # fava_miler/build/lib/fava_miler/common/favainvestorapi.py: 1
