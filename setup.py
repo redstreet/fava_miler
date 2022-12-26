@@ -20,7 +20,7 @@ setup(
     include_package_data=True,
     install_requires=[
         'beancount>=2.3.1',
-        'fava>=1.19',
+        'fava>=1.23',
         'Click',
     ],
     entry_points={

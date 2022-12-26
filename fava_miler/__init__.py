@@ -11,5 +11,5 @@ class Miler(FavaExtensionBase):  # pragma: no cover
 
     def build_miles_tables(self):
         """Build main table"""
-        accapi = FavaInvestorAPI(self.ledger)
+        accapi = FavaInvestorAPI()
         return libmiler.get_miles_expirations(accapi, self.config)

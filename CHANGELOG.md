@@ -1,20 +1,11 @@
 # Changelog
 
-
-## (unreleased)
-
-
 ### Other
 
-- Dep conflicts. [Red S]
-- Requirements/pigar. [Red S]
-- Moved to click; added fava-miler as console-script. [Red S]
-- Flake. [Red S]
-- Pythonpackage workflow. [Red S]
-- Pythonpackage.yml upgrade python version. [Red S]
-- Add pythonpackage.yml. [Red S]
-- Flake8 + requirements.txt. [Red S]
-- Replace 9999-12-31 with the string no expiry. [Red S]
+- feat: moved to click; added fava-miler as console-script. [Red S]
+- feat: Replace 9999-12-31 with the string no expiry. [Red S]
+- chore: enable fava context and filters. Also upstream favaledger updates. [Red S]
+
 
 ## 0.2.3 (2022-04-03)
 
