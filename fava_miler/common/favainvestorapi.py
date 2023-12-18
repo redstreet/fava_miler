@@ -1,5 +1,4 @@
 from beancount.core import getters
-from fava.template_filters import cost_or_value
 from fava import __version__ as fava_version
 from packaging import version
 from fava.context import g
@@ -47,8 +46,3 @@ class FavaInvestorAPI:
     def get_account_open(self):
         # TODO: below is probably fava only, and needs to be made beancount friendly
         return g.ledger.all_entries_by_type.Open
-
-    def cost_or_value(self, node, date, include_children):
-        if include_children:
-            return cost_or_value(node.balance_children, date)
-        return cost_or_value(node.balance, date)
