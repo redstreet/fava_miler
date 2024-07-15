@@ -29,7 +29,7 @@ packaging == 20.9
 # fava_miler/.eggs/setuptools_scm-6.4.2-py3.8.egg/setuptools_scm/_version_cls.py: 11
 # fava_miler/.eggs/setuptools_scm-6.4.2-py3.8.egg/setuptools_scm/integration.py: 4
 # fava_miler/setup.py: 2
-setuptools == 65.5.1
+setuptools == 70.0.0
 
 # fava_miler/build/lib/fava_miler/common/clicommon.py: 4
 # fava_miler/fava_miler/common/clicommon.py: 4
