@@ -1,5 +1,6 @@
 #!/bin/env python3
 
+from decimal import ROUND_HALF_UP
 from beancount.core.number import Decimal
 from beancount.core.amount import Amount
 import collections
@@ -50,12 +51,15 @@ def get_miles_expirations(accapi, options):
         except (KeyError, AttributeError):
             return {}
 
+    def rnd(n):
+        return n.quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+
     ret_rows = []
     for row in rrows:
         meta = get_miles_metadata(row.points)
 
         value = meta.get('points-value', Amount(Decimal(0), 'NONE'))
-        converted_value = Amount(value.number * row.balance, value.currency)
+        converted_value = Amount(rnd(value.number * row.balance), value.currency)
 
         expiry_months = meta.get('expiry-months', 0)
         if expiry_months >= 0:

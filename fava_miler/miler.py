@@ -15,7 +15,7 @@ def miler(beancount_file, accounts_pattern, exclude_currencies):
     """Beancount Miles and Rewards Manager"""
     accapi = api.AccAPI(beancount_file, locals())
     result = libmiler.get_miles_expirations(accapi, accapi.options)
-    pretty_print_table(*result)
+    pretty_print_table(*result, floatfmt=",.0f")
 
 
 if __name__ == '__main__':
