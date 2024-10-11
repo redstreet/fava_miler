@@ -2,7 +2,7 @@
 
 from fava.ext import FavaExtensionBase
 from . import libmiler
-from .common.favainvestorapi import *
+from .common.favainvestorapi import FavaInvestorAPI
 
 
 class Miler(FavaExtensionBase):  # pragma: no cover
