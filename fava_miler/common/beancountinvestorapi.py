@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
+from collections import namedtuple
+from beancount.core import convert
 from beancount import loader
 from beancount.core import getters
 from beancount.core import prices
 from beancount.core import realization
-from beancount.query import query
+from beanquery import query
 from beancount.core.data import Open
 from beancount.core.data import Custom
 import ast
@@ -14,12 +16,16 @@ class AccAPI:
     def __init__(self, beancount_file, options):
         self.entries, _, self.options_map = loader.load_file(beancount_file)
         self.options = options
+        self.convert_position = convert.convert_position
 
     def end_date(self):
         return None  # Only used in fava (UI selection context)
 
     def build_price_map(self):
         return prices.build_price_map(self.entries)
+
+    def build_beancount_price_map(self):
+        return self.build_price_map()
 
     def build_filtered_price_map(self, pos, base_currency):
         """Ignore filtering since we are not in fava. Return all prices"""
@@ -41,6 +47,12 @@ class AccAPI:
 
     def query_func(self, sql):
         rtypes, rrows = query.run_query(self.entries, self.options_map, sql)
+
+        # Convert this into Beancount v2 format, so the rows are namedtuples
+        field_names = [t.name for t in rtypes]
+        rtypes = [(t.name, t.datatype) for t in rtypes]
+        Row = namedtuple("Row", field_names)
+        rrows = [Row(*row) for row in rrows]
         return rtypes, rrows
 
     def get_operating_currencies(self):
@@ -57,6 +69,12 @@ class AccAPI:
         oc = getters.get_account_open_close(self.entries)
         opens = [v for k, v in oc.items() if isinstance(v[0], Open)]
         return opens
+
+    # def cost_or_value(self, node, date, include_children):
+    #     invent inventory.reduce(get_market_value, g.ledger.price_map, date)
+    #     if include_children:
+    #         return cost_or_value(node.balance_children, date)
+    #     return cost_or_value(node.balance, date)
 
     def get_custom_config(self, module_name):
         """Get fava config for the given plugin that can then be used on the command line"""
