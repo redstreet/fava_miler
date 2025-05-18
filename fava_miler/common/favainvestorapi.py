@@ -2,6 +2,7 @@ from beancount.core import getters
 from fava import __version__ as fava_version
 from packaging import version
 from fava.context import g
+import collections
 
 
 class FavaInvestorAPI:
@@ -25,9 +26,13 @@ class FavaInvestorAPI:
         return g.filtered.root_tree
 
     def query_func(self, sql):
-        # Based on the fava version, determine if we need to add a new
-        # positional argument to fava's execute_query()
-        if version.parse(fava_version) >= version.parse("1.22"):
+        # Based on the fava version, determine the api of the execute_query function to call
+        if version.parse(fava_version) >= version.parse("1.30"):
+            res = g.ledger.query_shell.execute_query_serialised(g.filtered.entries, sql)
+            rtypes = [(rtype.name, rtype.dtype) for rtype in res.types]
+            Row = collections.namedtuple('Row', ['account', 'balance', 'points', 'latest_transaction'])
+            rrows = [Row(*rrow) for rrow in res.rows]
+        elif version.parse(fava_version) >= version.parse("1.22"):
             _, rtypes, rrows = g.ledger.query_shell.execute_query(g.filtered.entries, sql)
         else:
             _, rtypes, rrows = g.ledger.query_shell.execute_query(sql)
