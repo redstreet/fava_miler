@@ -1,13 +1,24 @@
 from beancount.core import getters
+from collections import namedtuple
+from fava.core.conversion import cost_or_value as cost_or_value_without_context
 from fava import __version__ as fava_version
 from packaging import version
 from fava.context import g
-import collections
+from fava.core.conversion import convert_position
+from beancount.core import realization
+from beancount.core import prices
+from beanquery import query
 
 
 class FavaInvestorAPI:
+    def __init__(self):
+        self.convert_position = convert_position
+
     def build_price_map(self):
-        return g.ledger.price_map
+        return g.ledger.prices
+
+    def build_beancount_price_map(self):
+        return prices.build_price_map(g.ledger.all_entries)
 
     def build_filtered_price_map(self, pcur, base_currency):
         """pcur and base_currency are currency strings"""
@@ -20,18 +31,23 @@ class FavaInvestorAPI:
         return {entry.currency: entry for entry in g.filtered.ledger.all_entries_by_type.Commodity}
 
     def realize(self):
-        return g.filtered.root_account
+        return realization.realize(g.filtered.entries)
 
     def root_tree(self):
         return g.filtered.root_tree
 
     def query_func(self, sql):
-        # Based on the fava version, determine the api of the execute_query function to call
+        # Based on the fava version, determine if we need to add a new
+        # positional argument to fava's execute_query()
         if version.parse(fava_version) >= version.parse("1.30"):
-            res = g.ledger.query_shell.execute_query_serialised(g.filtered.entries, sql)
-            rtypes = [(rtype.name, rtype.dtype) for rtype in res.types]
-            Row = collections.namedtuple('Row', ['account', 'balance', 'points', 'latest_transaction'])
-            rrows = [Row(*rrow) for rrow in res.rows]
+            rtypes, rrows = query.run_query(g.filtered.entries, g.ledger.options, sql)
+
+            # Convert this into Beancount v2 format, so the rows are namedtuples
+            field_names = [t.name for t in rtypes]
+            Row = namedtuple("Row", field_names)
+            rtypes = [(t.name, t.datatype) for t in rtypes]
+            rrows = [Row(*row) for row in rrows]
+
         elif version.parse(fava_version) >= version.parse("1.22"):
             _, rtypes, rrows = g.ledger.query_shell.execute_query(g.filtered.entries, sql)
         else:
@@ -51,3 +67,9 @@ class FavaInvestorAPI:
     def get_account_open(self):
         # TODO: below is probably fava only, and needs to be made beancount friendly
         return g.ledger.all_entries_by_type.Open
+
+    def cost_or_value(self, node, date, include_children):
+        nodes = node.balance
+        if include_children:
+            nodes = node.balance_children
+        return cost_or_value_without_context(nodes, g.conversion, g.ledger.prices, date)
